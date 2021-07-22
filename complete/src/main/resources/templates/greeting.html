@@ -5,6 +5,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p th:text="'Hello, ' + ${name} + '!'" />
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="greeting: ${greetings}">
+            <td th:text="${greeting.getId()}">-1</td>
+            <td th:text="${greeting.getContent()}">None</td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>

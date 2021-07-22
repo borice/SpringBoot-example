@@ -1,12 +1,45 @@
 <!DOCTYPE HTML>
-<html xmlns:script="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-<head> 
-    <title>Getting Started: Serving Web Content</title> 
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-<input type="text">latitude:</input>
-    <p>Get your greeting <a href="/greeting?lat==boris">here</a></p>
+<p>Get your HTML greeting <a href="/greet">here</a></p>
+<div id="vis"></div>
+<script>
+    const div = d3.select("div#vis");
 
+    d3.json("/greeting")
+        .then(function (data) {
+            console.log("data loaded");
+
+            var table = div.append('table');
+            var thead = table.append('thead');
+            var tbody = table.append('tbody');
+            var columns = ['id', 'content'];
+
+            thead.append('tr')
+                .selectAll('th')
+                .data(columns)
+                .enter()
+                .append('th')
+                .text(function (col) { return col; });
+
+            var rows = tbody.selectAll('tr')
+                .data(data)
+                .enter()
+                .append('tr')
+
+            rows.selectAll('td')
+                .data(function (row) {
+                    return columns.map(function (column) { return row[column]; });
+                })
+                .enter()
+                .append('td')
+                .text(function (d) { return d; });
+        });
+</script>
 </body>
 </html>
